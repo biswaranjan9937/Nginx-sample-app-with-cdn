@@ -10,9 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
       - name: Deploy to EC2 via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -30,12 +27,12 @@ jobs:
             sudo cp frontend-app/app.js /var/www/myapp/
             sudo chown -R www-data:www-data /var/www/myapp
 
-            # Deploy backend
+            # Install backend dependencies
             cd /home/ubuntu/myapp/backend
             npm install --production
 
-            # Restart backend
-            pm2 restart myapp-backend
+            # Reload backend (graceful — zero downtime)
+            pm2 reload myapp-backend
 
-            # Reload Nginx (only if config changed)
+            # Reload Nginx
             sudo nginx -t && sudo systemctl reload nginx
