@@ -33,6 +33,19 @@ app.post('/api/contact', (req, res) => {
   res.json({ success: true, message: `Thanks ${name}, we received your message!` });
 });
 
+// Stats endpoint
+app.get('/api/stats', (req, res) => {
+  res.json({
+    success: true,
+    data: [
+      { label: 'Total Users', value: '1,240' },
+      { label: 'Items Available', value: '3' },
+      { label: 'Uptime', value: '99.9%' },
+      { label: 'Version', value: 'v2.0' },
+    ]
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

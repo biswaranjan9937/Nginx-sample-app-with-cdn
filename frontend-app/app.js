@@ -60,7 +60,26 @@ async function checkHealth() {
   }
 }
 
+// Load stats from backend
+async function loadStats() {
+  const container = document.getElementById('statsGrid');
+  if (!container) return;
+  try {
+    const res = await fetch(`${API_BASE}/stats`);
+    const { data } = await res.json();
+    container.innerHTML = data.map(stat => `
+      <div class="stat-card">
+        <div class="stat-value">${stat.value}</div>
+        <div class="stat-label">${stat.label}</div>
+      </div>
+    `).join('');
+  } catch (err) {
+    container.innerHTML = '<p>Failed to load stats.</p>';
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   loadItems();
+  loadStats();
   checkHealth();
 });
